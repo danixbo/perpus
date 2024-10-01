@@ -21,6 +21,17 @@
         <form action="{{ route('pages.siswa.update', $siswa->nisn) }}" method="POST">
             @csrf
             @method('POST')
+            
+            <!-- Tambahkan field konfirmasi password di awal form -->
+            <div class="mb-6">
+                <label class="block text-gray-300 text-sm font-semibold mb-2" for="current_password">
+                    Konfirmasi Password Untuk Mengubah Data
+                </label>
+                <input
+                    class="w-full bg-gray-700 text-gray-100 border border-gray-600 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200"
+                    id="current_password" name="current_password" type="password" required>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label class="block text-gray-300 text-sm font-semibold mb-2" for="nisn">
@@ -61,10 +72,9 @@
                     <select
                         class="w-full bg-gray-700 text-gray-100 border border-gray-600 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200"
                         id="role" name="role" required>
-                        <option value="" disabled selected>Pilih Role</option>
-                        <option value="Siswa">Siswa</option>
-                        <option value="Petugas">Petugas</option>
-                        <option value="Admin">Admin</option>
+                        <option value="Siswa" {{ $siswa->role == 'Siswa' ? 'selected' : '' }}>Siswa</option>
+                        <option value="Petugas" {{ $siswa->role == 'Petugas' ? 'selected' : '' }}>Petugas</option>
+                        <option value="Admin" {{ $siswa->role == 'Admin' ? 'selected' : '' }}>Admin</option>
                     </select>
                 </div>
                 <div>
@@ -112,3 +122,15 @@
         </form>
     </div>
 @endsection
+
+@if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">Oops!</strong>
+        <span class="block sm:inline">Ada beberapa masalah dengan input Anda.</span>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif

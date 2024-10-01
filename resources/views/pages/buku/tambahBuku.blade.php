@@ -62,9 +62,17 @@
                     <label class="block text-gray-300 text-sm font-semibold mb-2" for="kode_buku">
                         Kode Buku
                     </label>
-                    <input
-                        class="w-full bg-gray-700 text-gray-100 border border-gray-600 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200"
-                        id="kode_buku" name="kode_buku" type="text" placeholder="K00" required>
+                    <div class="flex">
+                        <input
+                            class="w-full bg-gray-700 text-gray-100 border border-gray-600 rounded-l-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200"
+                            id="kode_buku" name="kode_buku" type="text" readonly required>
+                        <button
+                            type="button"
+                            class="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-r-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-gray-800"
+                            onclick="generateKodeBuku()">
+                            Random
+                        </button>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-gray-300 text-sm font-semibold mb-2" for="judul">
@@ -116,6 +124,15 @@
     </div>
 
     <script>
+        function generateKodeBuku() {
+            const prefix = 'perpus_';
+            const randomPart = Math.random().toString(36).substring(2, 11).toUpperCase();
+            const kodeBuku = prefix + randomPart;
+            document.getElementById('kode_buku').value = kodeBuku;
+        }
+
+        document.addEventListener('DOMContentLoaded', generateKodeBuku);
+
         function updateFileName(input) {
             const fileName = input.files[0]?.name || 'Pilih foto';
             document.getElementById('file-name').textContent = fileName;
@@ -124,7 +141,7 @@
         function resetForm() {
             document.getElementById('foto').value = '';
             document.getElementById('file-name').textContent = 'Pilih foto';
-            document.getElementById('kode_buku').value = '';
+            generateKodeBuku();
             document.getElementById('judul').value = '';
             document.getElementById('penerbit').value = '';
             document.getElementById('tahun_terbit').value = '';

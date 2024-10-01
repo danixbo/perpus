@@ -133,7 +133,7 @@
             alert.classList.remove('hidden');
             setTimeout(() => {
                 closeAlert();
-            }, 5000); // Auto close after 5 seconds
+            }, 5000);
         }
 
         function closeAlert() {
@@ -171,7 +171,6 @@
                 });
         }
 
-        // Fungsi untuk mengatur tanggal pinjam ke hari ini
         function setTanggalPinjam() {
             const today = new Date();
             const year = today.getFullYear();
@@ -188,7 +187,6 @@
             document.getElementById('tanggal_kembali').value = formattedDate;
         }
 
-        // Panggil fungsi setTanggalPinjam saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
             setTanggalPinjam();
             setTanggalKembali();
@@ -198,9 +196,8 @@
             document.getElementById('nisn').value = '';
             document.getElementById('nama').value = '';
             document.getElementById('kode_kelas').value = '';
-            setTanggalPinjam(); // Reset tanggal pinjam ke hari ini
+            setTanggalPinjam();
             document.getElementById('tanggal_kembali').value = '';
-            // Clear book table inputs
             const inputs = document.querySelectorAll('#buku_table input');
             inputs.forEach(input => input.value = '');
         }
@@ -262,10 +259,10 @@
                 buku_list: bukuList
             };
 
-            axios.post('{{ route("peminjaman.store") }}', data)
+            axios.post('{{ route("pages.peminjaman.store") }}', data)
                 .then(function (response) {
                     showAlert('Peminjaman berhasil disimpan', 'success');
-                    Hapus(); // Reset form setelah berhasil
+                    window.location.href = '{{ route("pages.peminjaman.index") }}';
                 })
                 .catch(function (error) {
                     console.error('Error:', error);

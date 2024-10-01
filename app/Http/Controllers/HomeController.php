@@ -8,7 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $books = Buku::latest()->paginate(8); // 8 books per page
+        $books = Buku::latest()->paginate(8);
         return view('pages.tampilan_awal.home', compact('books'));
     }
 }

@@ -114,7 +114,7 @@
             const blob = document.createElement('div');
             blob.classList.add('blob');
 
-            const size = Math.random() * 150 + 50; // Random size between 50 and 200
+            const size = Math.random() * 150 + 50; 
             blob.style.width = `${size}px`;
             blob.style.height = `${size}px`;
 
@@ -130,7 +130,7 @@
         function moveBlob(blob) {
             const newX = Math.random() * window.innerWidth;
             const newY = Math.random() * window.innerHeight;
-            const duration = Math.random() * 10 + 5; // Random duration between 5 and 15 seconds
+            const duration = Math.random() * 10 + 5;
 
             blob.style.transition = `all ${duration}s ease-in-out`;
             blob.style.left = `${newX}px`;
@@ -140,7 +140,7 @@
         }
 
         const blobContainer = document.getElementById('blobContainer');
-        const blobCount = 5; // Number of blobs
+        const blobCount = 5;
 
         for (let i = 0; i < blobCount; i++) {
             const blob = createBlob();
@@ -158,7 +158,6 @@
         }
 
         if (window.location.hash === '#footer') {
-            // Use setTimeout to ensure the DOM is fully loaded
             setTimeout(scrollToFooter, 0);
         }
     </script>

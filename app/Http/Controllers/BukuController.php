@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 
 class BukuController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function index()
     {
@@ -20,7 +26,6 @@ class BukuController extends Controller
         $book = Buku::where('kode_buku', $kode_buku)->firstOrFail();
         return view('pages.tampilan_awal.halaman_buku', compact('book'));
     }
-
 
     public function create()
     {
@@ -57,7 +62,7 @@ class BukuController extends Controller
             $buku->penerbit = $request->penerbit;
             $buku->tahun_terbit = $request->tahun_terbit;
             $buku->deskripsi = $request->deskripsi;
-            $buku->total_favorit = 0; // Inisialisasi total_favorit dengan 0
+            $buku->total_favorit = 0;
 
             if ($request->hasFile('foto')) {
                 $foto = $request->file('foto');
@@ -83,40 +88,35 @@ class BukuController extends Controller
     public function update(Request $request, $kode_buku)
     {
         $request->validate([
-           'judul' => 'required',
-           'penerbit' => 'required',
-           'tahun_terbit' => 'required|numeric',
-           'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-           'deskripsi' => 'required',
-        ], [
-            'judul.required' => 'Judul buku harus diisi',
-            'penerbit.required' => 'Penerbit harus diisi',
-            'tahun_terbit.required' => 'Tahun terbit harus diisi',
-            'tahun_terbit.numeric' => 'Tahun terbit harus berupa angka',
-            'foto.image' => 'Foto harus berupa gambar',
-            'foto.mimes' => 'Foto harus berupa gambar dengan format jpeg, png, jpg, atau gif',
-            'foto.max' => 'Foto harus berukuran maksimal 2MB',
-            'deskripsi.required' => 'Deskripsi harus diisi',
+            'kode_buku' => 'required|unique:bukus,kode_buku,'.$kode_buku.',kode_buku',
+            'judul' => 'required',
+            'penerbit' => 'required',
+            'tahun_terbit' => 'required|numeric|min:1900|max:' . (date('Y') + 1),
+            'deskripsi' => 'required',
+            'foto' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $buku = Buku::where('kode_buku', $kode_buku)->firstOrFail();
+
+        $buku->kode_buku = $request->kode_buku;
         $buku->judul = $request->judul;
         $buku->penerbit = $request->penerbit;
         $buku->tahun_terbit = $request->tahun_terbit;
         $buku->deskripsi = $request->deskripsi;
 
         if ($request->hasFile('foto')) {
-            if ($buku->foto) {
-                Storage::delete('public/' . $buku->foto);
+            if ($buku->foto && file_exists(public_path($buku->foto))) {
+                unlink(public_path($buku->foto));
             }
 
             $foto = $request->file('foto');
-            $fotoName = time().'.'.$foto->getClientOriginalExtension();
-            $fotoPath = $foto->storeAs('public/books', $fotoName);
-            $buku->foto = 'books/' . $fotoName;
+            $namaFoto = time() . '.' . $foto->getClientOriginalExtension();
+            $foto->move(public_path('gambar'), $namaFoto);
+            $buku->foto = 'gambar/' . $namaFoto;
         }
 
         $buku->save();
+
         return redirect()->route('pages.buku.index')->with('success', 'Buku berhasil diperbarui');
     }
 

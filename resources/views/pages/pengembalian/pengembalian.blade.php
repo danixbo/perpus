@@ -50,12 +50,10 @@
                     <td>{{ $item->siswa->nama ?? 'N/A' }}</td>
                     <td>{{ $item->tanggal_kembali }}</td>
                     <td>
-                        <!-- Tambahkan detail buku yang dikembalikan jika diperlukan -->
                         @foreach ($item->detailPengembalian as $detail)
                             {{ $detail->buku->judul ?? 'N/A' }} ({{ $detail->jumlah }})<br>
                         @endforeach
                     </td>
-                    <!-- Tambahkan kolom lain sesuai kebutuhan -->
                 </tr>
             @empty
                 <tr>

@@ -66,83 +66,57 @@
                 <label class="block text-gray-300 text-sm font-semibold mb-2" for="buku_table">
                     Buku
                 </label>
-                <table class="w-full text-gray-300" id="buku_table">
-                    <thead>
-                        <tr>
-                            <th class="py-2 px-4 bg-gray-700 text-left">#</th>
-                            <th class="py-2 px-4 bg-gray-700 text-left">Kode Buku</th>
-                            <th class="py-2 px-4 bg-gray-700 text-left">Judul Buku</th>
-                            <th class="py-2 px-4 bg-gray-700 text-left">Penerbit</th>
-                            <th class="py-2 px-4 bg-gray-700 text-left">Tahun Terbit</th>
-                            <th class="py-2 px-4 bg-gray-700 text-left">Jumlah Buku</th>
-                        </tr>
-                    </thead>
-                    <tbody id="buku_tbody">
-                        @foreach($peminjaman->detailPeminjaman as $index => $detail)
-                        <tr>
-                            <td class="py-2 px-4">{{ $index + 1 }}</td>
-                            <td class="py-2 px-4">{{ $detail->kode_buku }}</td>
-                            <td class="py-2 px-4">{{ $detail->buku->judul ?? 'N/A' }}</td>
-                            <td class="py-2 px-4">{{ $detail->buku->penerbit ?? 'N/A' }}</td>
-                            <td class="py-2 px-4">{{ $detail->buku->tahun_terbit ?? 'N/A' }}</td>
-                            <td class="py-2 px-4">{{ $detail->jumlah }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <form action="{{ route('peminjaman.selesai', $peminjaman->id) }}" method="POST" id="pengembalianForm">
+                    @csrf
+                    @method('POST')
+                    <table class="w-full text-gray-300" id="buku_table">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 bg-gray-700 text-left">#</th>
+                                <th class="py-2 px-4 bg-gray-700 text-left">Kode Buku</th>
+                                <th class="py-2 px-4 bg-gray-700 text-left">Judul Buku</th>
+                                <th class="py-2 px-4 bg-gray-700 text-left">Penerbit</th>
+                                <th class="py-2 px-4 bg-gray-700 text-left">Tahun Terbit</th>
+                                <th class="py-2 px-4 bg-gray-700 text-left">Jumlah Buku</th>
+                                <th class="py-2 px-4 bg-gray-700 text-left">Kembalikan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="buku_tbody">
+                            @foreach($peminjaman->detailPeminjaman as $index => $detail)
+                            <tr>
+                                <td class="py-2 px-4">{{ $index + 1 }}</td>
+                                <td class="py-2 px-4">{{ $detail->kode_buku }}</td>
+                                <td class="py-2 px-4">{{ $detail->buku->judul ?? 'N/A' }}</td>
+                                <td class="py-2 px-4">{{ $detail->buku->penerbit ?? 'N/A' }}</td>
+                                <td class="py-2 px-4">{{ $detail->buku->tahun_terbit ?? 'N/A' }}</td>
+                                <td class="py-2 px-4">{{ $detail->jumlah }}</td>
+                                <td class="py-2 px-4">
+                                    <input type="checkbox" name="selected_books[]" value="{{ $detail->kode_buku }}">
+                                    <input type="hidden" name="kode_buku[]" value="{{ $detail->kode_buku }}">
+                                    <input type="hidden" name="jumlah[]" value="{{ $detail->jumlah }}">
+                                    {{ $detail->buku->judul }} ({{ $detail->jumlah }})
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <input type="hidden" name="nis" value="{{ $peminjaman->nisn }}">
+                    <input type="hidden" name="tanggal_kembali" value="{{ date('Y-m-d') }}">
+                    <div class="mt-4"></div>
+                        <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-gray-800">
+                            Kembalikan Buku Terpilih
+                        </button>
+                    </div>
+                </form>
             </div>
 
             <div class="flex items-center gap-4 mt-8">
                 <a href="{{ route('pages.peminjaman.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800">
                     Kembali
                 </a>
-                <form action="{{ route('peminjaman.selesai', $peminjaman->id) }}" method="POST" class="inline">
-                    @csrf
-                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-800">
-                        Serahkan Buku
-                    </button>
-                </form>
             </div>
         </form>
     </div>
 
-    <!-- Alert Notification -->
-    <div id="alert" class="fixed bottom-5 right-5 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg transform transition-all duration-500 translate-y-full opacity-0">
-        <div class="flex items-center">
-            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            <span id="alertMessage"></span>
-        </div>
-    </div>
-@endsection
 
-@section('custom-script')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const selesaiButton = document.getElementById('selesaiButton');
-    
-    if (selesaiButton) {
-        selesaiButton.addEventListener('click', function() {
-            console.log('Button clicked');
-            axios.post('{{ route("peminjaman.selesai", $peminjaman->id) }}', {}, {
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(function (response) {
-                console.log('Success:', response.data);
-                alert('Peminjaman berhasil diselesaikan');
-                window.location.href = '{{ route("pages.peminjaman.index") }}';
-            })
-            .catch(function (error) {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat menyelesaikan peminjaman');
-            });
-        });
-    } else {
-        console.error('Selesai button not found');
-    }
-});
-</script>
 @endsection

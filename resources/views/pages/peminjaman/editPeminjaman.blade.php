@@ -136,7 +136,7 @@
             alert.classList.remove('hidden');
             setTimeout(() => {
                 closeAlert();
-            }, 5000); // Auto close after 5 seconds
+            }, 5000);
         }
 
         function closeAlert() {
@@ -218,7 +218,6 @@
             axios.put(`{{ route('pages.peminjaman.update', '') }}/${peminjamanId}`, data)
                 .then(function (response) {
                     showAlert('Peminjaman berhasil diperbarui', 'success');
-                    // Redirect ke halaman index setelah berhasil
                     window.location.href = '{{ route('pages.peminjaman.index') }}';
                 })
                 .catch(function (error) {

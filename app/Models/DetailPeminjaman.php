@@ -9,7 +9,7 @@ class DetailPeminjaman extends Model
 {
     use HasFactory;
 
-    protected $table = 'detail_peminjamen'; // Sesuaikan dengan nama tabel yang benar
+    protected $table = 'detail_peminjamen';
     protected $fillable = ['id_peminjaman', 'kode_buku', 'jumlah'];
 
     public function peminjaman()

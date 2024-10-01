@@ -10,7 +10,7 @@ class RegisterController extends Controller
 {
     public function showRegistrationForm()
     {
-        $kelas = Kelas::all(); // Or however you want to query your classes
+        $kelas = Kelas::all();
         return view('pages.register', compact('kelas'));
     }
 
@@ -27,11 +27,9 @@ class RegisterController extends Controller
         ]);
 
         $validatedData['password'] = bcrypt($validatedData['password']);
-        $validatedData['role'] = 'Siswa'; // Set default role to 'Siswa'
+        $validatedData['role'] = 'Siswa';
 
         $siswa = Siswa::create($validatedData);
-
-        // You can add additional logic here, such as logging in the student automatically
 
         return redirect()->route('login')->with('success', 'Pendaftaran berhasil. Silakan login.');
     }

@@ -29,7 +29,7 @@
             </div>
         @endif
 
-        <form action="{{ route('pages.buku.update', $buku->kode_buku) }}" method="POST" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('pages.buku.update', $buku->kode_buku) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -41,8 +41,8 @@
                         @if($buku->foto)
                             <img src="{{ asset($buku->foto) }}" alt="{{ $buku->judul }}" class="mb-4 w-full h-64 object-cover rounded-md">
                         @endif
-                        <input type="file" id="gambar" name="gambar" accept="image/*" class="hidden" onchange="updateFileName(this)">
-                        <label for="gambar" class="cursor-pointer flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-300 bg-gray-700 border border-gray-600 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition duration-300">
+                        <input type="file" id="foto" name="foto" accept="gambar/*" class="hidden" onchange="updateFileName(this)">
+                        <label for="foto" class="cursor-pointer flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-300 bg-gray-700 border border-gray-600 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition duration-300">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
@@ -81,7 +81,7 @@
                     </label>
                     <input
                         class="w-full bg-gray-700 text-gray-100 border border-gray-600 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200"
-                        id="tahun_terbit" name="tahun_terbit" type="number" placeholder="2001" value="{{ $buku->tahun_terbit }}">
+                        id="tahun_terbit" name="tahun_terbit" type="number" min="1900" max="{{ date('Y') + 1 }}" placeholder="2001" value="{{ $buku->tahun_terbit }}">
                 </div>
                 <div>
                     <label class="block text-gray-300 text-sm font-semibold mb-2" for="deskripsi">

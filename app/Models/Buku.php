@@ -14,15 +14,7 @@ class Buku extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = [
-        'kode_buku',
-        'judul',
-        'penerbit',
-        'tahun_terbit',
-        'foto',
-        'deskripsi',
-        'total_favorit'
-    ];
+    protected $fillable = ['kode_buku', 'judul', 'penerbit', 'tahun_terbit', 'deskripsi', 'foto'];
 
     public function detailPeminjaman()
     {
