@@ -53,11 +53,11 @@
                 </div>
                 <div>
                     <label class="block text-gray-300 text-sm font-semibold mb-2" for="kode_buku">
-                        Kode Buku
+                        Kode Buku (Tidak dapat diubah)
                     </label>
                     <input
                         class="w-full bg-gray-700 text-gray-100 border border-gray-600 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200"
-                        id="kode_buku" name="kode_buku" type="text" placeholder="K00" value="{{ $buku->kode_buku }}">
+                        id="kode_buku" name="kode_buku" type="text" placeholder="K00" value="{{ $buku->kode_buku }}" readonly>
                 </div>
                 <div>
                     <label class="block text-gray-300 text-sm font-semibold mb-2" for="judul">
